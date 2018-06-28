@@ -1,0 +1,109 @@
+<div class="row">
+    <side-panel class="zero-mobile">
+        <nav class="vertical">
+            <h2><i18n>forum.list.title</i18n></h2>
+            <ul>
+                <li ng-repeat="cat in categories.all">
+                    <h2><a ng-click="openCategory(cat)">[[cat.name]]</a></h2>
+                    <ul class="sublist">
+                        <li ng-repeat="mysubject in cat.subjects.all">
+                            <a ng-class="{selected : mysubject._id == subject._id }" ng-click="openSubject(mysubject)">[[mysubject.title]]</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </side-panel>
+
+    <app-title>
+        <h1>
+            <i class="forum"></i>
+            <span ng-click="openMainPage()"><i18n>forum.title</i18n></span><span class="zero-mobile"> / </span>
+            <span subtitle>
+                <a class="subtitle-item" ng-click="openCategory(subject.category)">[[subject.category.name]]</a> /
+                <span class="subtitle-item" >[[subject.title]]</span>
+            </span>
+        </h1>
+    </app-title>
+
+
+</div>
+
+<section>
+    <a id="top" ng-click="scrollTo('bottom')" class="right-magnet">↓ <span class="no-style ng-scope"><i18n>forum.go.to.last.message</i18n></span></a>
+
+    <div ng-repeat="message in messages.all | orderBy: 'created.$date'" class="bubble-container alternate-container">
+    	<div class="row vertical-spacing"></div>
+    	<div class="row rigid-grid">
+    		<div class="two cell centered-text twelve-mobile whose-bubble" ng-click="viewAuthor(message)">
+                <div>
+                    <strong>[[message.owner.displayName]]</strong>
+                </div>
+                <div>
+                    <em class="small-text">[[formatDateFromNow(message.created.$date)]]</em>
+                </div>
+    			<div class="image">
+    				<img ng-src="/userbook/avatar/[[message.owner.userId]]?thumbnail=100x100" />
+    			</div>
+    		</div>
+    		<article class="margin-two bubble" ng-if="message !== editedMessage" ng-init="disableResizableElement = true">
+                <plus class="contextual-buttons right-magnet" ng-if="ownerCanEditMessage(subject, message)">
+                    <div class="row">
+                        <button class="cell" ng-if="ownerCanEditMessage(subject, message)" ng-click="confirmRemoveMessage(message)">
+                            <i18n>forum.remove</i18n>
+                        </button>
+    					<button class="cell" ng-if="ownerCanEditMessage(subject, message)" ng-click="editMessage(message)">
+    					    <i18n>forum.edit</i18n>
+    					</button>
+                    </div>
+                </plus>
+    			<p bind-html="message.content"></p>
+    		</article>
+    		<article class="margin-two bubble" ng-if="message === editedMessage" ng-init="disableResizableElement = false">
+                <editor ng-model="editedMessage.content" required inline></editor>
+    			<div class="ten cell warning" ng-if="editedMessage.error !== undefined" translate content="[[editedMessage.error]]">
+    			</div>
+                <div class="row">
+        			<button class="right-magnet" ng-mousedown="saveEditMessage()"><i18n>edit</i18n></button>
+        			<input type="button" class="cancel right-magnet" i18n-value="cancel" ng-mousedown="cancelEditMessage()" />
+                </div>
+    		</article>
+    	</div>
+    </div>
+
+    <resource-right name="contrib" resource="subject" ng-if="!editedMessage._id && !subject.locked">
+        <div class="row rigid-grid bubble-container">
+            <div class="two cell centered-text twelve-mobile whose-bubble" ng-click="viewAuthor(message)">
+                <div>
+                    <strong>[[me.username]]</strong>
+                </div>
+    			<div class="image">
+    				<img ng-src="/userbook/avatar/[[me.userId]]?thumbnail=100x100" />
+    			</div>
+    		</div>
+            <article class="margin-two bubble">
+        		<editor ng-model="newMessage.content" inline required></editor>
+        		<div class="ten cell warning" ng-if="editedMessage.error !== undefined" translate content="[[editedMessage.error]]">
+        		</div>
+                <div class="row">
+                    <button class="right-magnet" ng-click="addMessage(newMessage)" ng-if="!subject.locked"><i18n>forum.reply</i18n></button>
+                </div>
+        	</article>
+        </div>
+    </resource-right>
+
+    <a id="bottom" ng-click="scrollTo('top')" class="right-magnet">&uarr; <i18n>forum.go.to.top</i18n></a>
+
+    <div ng-if="display.confirmDelete">
+    	<lightbox show="display.confirmDelete" on-close="cancelRemoveMessage()">
+    		<div class="row reduce-block-eight">
+    			<i18n>forum.confirm.delete.message</i18n>
+    		</div>
+    		<div class="row reduce-block-eight">
+    			<button class="right-magnet" ng-click="removeMessage()"><i18n>remove</i18n></button>
+    			<input type="button" class="cancel right-magnet" i18n-value="cancel" ng-click="cancelRemoveMessage()" />
+    		</div>
+    	</lightbox>
+    </div>
+
+</section>
