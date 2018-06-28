@@ -1,0 +1,22 @@
+<%= render 'application/errors', object: @redirection, scope: 'admin.redirections' %>
+
+<div class="cf-cgroup">
+  <%= f.label :path %>
+  <%= f.text_field :path %>
+</div>
+
+<div class="cf-cgroup">
+  <%= f.label :destination %>
+  <%= f.text_field :destination %>
+</div>
+
+<div class="cf-cgroup">
+  <%= f.label :http_status %>
+  <%= f.number_field :http_status %>
+</div>
+
+<div class="cf-cgroup">
+  <%= f.label :comment %>
+  <%= f.text_area :comment %>
+</div>
+

@@ -1,0 +1,10 @@
+en:
+  activerecord:
+    models:
+      message: Message
+      cf_thread: Thread
+      user: User
+      forum: Forum
+
+    attributes:
+      message:

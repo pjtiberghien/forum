@@ -1,0 +1,13 @@
+/* -*- coding: utf-8 -*- */
+
+body[data-controller="admin/badge_groups"] {
+  .badge-list {
+    display:flex;
+    flex-direction:row;
+    flex-wrap:wrap;
+
+    label { width:33%; }
+  }
+}
+
+/* eof */

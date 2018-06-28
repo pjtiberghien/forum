@@ -1,0 +1,39 @@
+<fieldset class="cf-tab-pane" id="personal_information">
+  <legend><%= t('users.settings.personal_information') %></legend>
+
+  <div class="cf-cgroup">
+    <label class="control-label" for="settings_email"><%= t('users.settings.email_form') %></label>
+    <input type="email" value="<%= @settings.conf('email') %>" name="settings[email]" id="settings_email" placeholder="mail@example.com"<%= disabled %>>
+  </div>
+
+  <div class="cf-cgroup">
+    <label class="control-label" for="settings_url"><%= t('users.settings.homepage') %></label>
+    <input type="url" value="<%= @settings.conf('url') %>" name="settings[url]" id="settings_url" placeholder="https://example.com/"<%= disabled %>>
+  </div>
+
+  <% if @user.badge?('seo_profi') %>
+    <div class="cf-cgroup">
+      <label for="settings_norelnofollow">
+        <%= hidden_field_tag 'settings[norelnofollow]', 'no', id: '' %>
+        <%= check_box_tag 'settings[norelnofollow]', 'yes', @settings.conf('norelnofollow') == 'yes' %>
+        <%= t('users.settings.norelnofollow') %>
+      </label>
+    </div>
+  <% end %>
+
+  <div class="cf-cgroup">
+    <label class="control-label" for="settings_jabber_id"><%= t('users.settings.jabber_id') %></label>
+    <input type="text" value="<%= @settings.conf('jabber_id') %>" name="settings[jabber_id]" id="settings_jabber_id"<%= disabled %>>
+  </div>
+
+  <div class="cf-cgroup">
+    <label class="control-label" for="settings_twitter_handle"><%= t('users.settings.twitter_handle') %></label>
+    <input type="text" value="<%= @settings.conf('twitter_handle') %>" name="settings[twitter_handle]" id="settings_twitter_handle"<%= disabled %>>
+  </div>
+
+  <div class="cf-cgroup">
+    <label for="settings_description"><%= t('users.settings.description') %></label>
+    <textarea name="settings[description]" id="settings_description"<%= disabled %>><%= @settings.conf('description') %></textarea>
+  </div>
+
+</fieldset>

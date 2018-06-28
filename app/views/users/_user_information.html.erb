@@ -1,0 +1,21 @@
+  <%= render 'application/errors', object: @user, scope: 'users' %>
+
+  <fieldset class="cf-tab-pane active" id="user-data">
+    <legend><%= t('users.user_information') %></legend>
+
+    <div class="cf-cgroup">
+      <%= f.label :username %>
+      <%= f.text_field :username %>
+    </div>
+
+    <div class="cf-cgroup">
+      <%= f.label :email %>
+      <%= f.email_field :email %>
+    </div>
+
+    <div class="cf-cgroup">
+      <%= f.label :avatar %>
+      <%= f.file_field :avatar %>
+    </div>
+
+  </fieldset>

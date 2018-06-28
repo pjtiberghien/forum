@@ -1,0 +1,35 @@
+<%
+all_pages_count = (@all_threads_count.to_f / @limit.to_f).ceil
+start_page = @page - 5
+end_page = @page + 5
+
+if start_page <= 0
+  end_page += -start_page
+  start_page = 1
+end
+
+end_page = all_pages_count if end_page > all_pages_count
+
+is_first = @page == 0
+is_last = @page == all_pages_count - 1
+
+if @all_threads_count > @limit
+%><div class="cf-pages">
+  <h3 class="visually-hidden"><%= t('global.paging') %></h3>
+
+  <ul>
+    <li class="first<%= ' disabled' if is_first %>"><%= cf_link_to t('views.pagination.first_page'), forum_path(current_forum), 'aria-disabled' => is_first ? true : nil %></li>
+    <li class="prev<%= ' disabled' if is_first %>"><%= cf_link_to t('views.pagination.prev_page'), forum_path(current_forum, p: is_first ? nil : @page - 1), 'aria-disabled' => is_first ? true : nil, rel: 'prev' %></li>
+
+    <% (start_page..end_page).each do |i| %>
+      <% current = (i - 1 == @page) %>
+      <li<% if current %> class="active disabled"<% end %>><%= cf_link_to(i, forum_path(current_forum, p: i-1),
+                                                                                 'aria-disabled' => current ? true : nil,
+                                                                                 'aria-current' => current ? 'page' : nil) %></li>
+    <% end %>
+
+    <li class="next<%= ' disabled' if is_last %>"><%= cf_link_to t('views.pagination.next_page'), forum_path(current_forum, p: is_last ? all_pages_count - 1 : @page + 1), 'aria-disabled' => is_last ? true : nil %></li>
+    <li class="last<%= ' disabled' if is_last %>"><%= cf_link_to t('views.pagination.last_page'), forum_path(current_forum, p: all_pages_count - 1), 'aria-disabled' => is_last ? true : nil %></li>
+  </ul>
+</div>
+<% end %>

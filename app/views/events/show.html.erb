@@ -1,0 +1,62 @@
+<%
+content_for :title, @event.name
+content_for :h1, @event.name
+content_for(:body_id, "events-show")
+content_for(:body_classes, 'events show event-' + @event.name.parameterize)
+%>
+
+<article class="thread-message event h-event">
+  <header class="message">
+    <h2><%= link_to @event.name, event_path(@event), class: 'p-name u-url' %></h2>
+
+    <div class="details">
+      <%=
+        time_tag @event.start_date, class: 'dt-start' do
+          link_to l(@event.start_date, format: date_format('date_format_date')), event_path(@event)
+        end
+      %>
+      <% if @event.end_date != @event.start_date %>
+        -
+        <%=
+          time_tag @event.end_date, class: 'dt-end' do
+            link_to l(@event.end_date, format: date_format('date_format_date')), event_path(@event)
+          end
+        %>
+      <% end %>
+
+      <%= t('events.in', location: "<span class=\"p-location\">#{@event.location}</span>").html_safe %>
+    </div>
+  </header>
+
+  <div class="posting-content event">
+    <div class="p-description">
+      <%= @event.to_html(@app_controller) %>
+    </div>
+
+    <% if @event.maps_link.present? %>
+      <h3><%= t('events.map') %></h3>
+
+      <iframe src="<%= @event.maps_link %>"></iframe>
+    <% end %>
+  </div>
+
+  <section>
+    <h3><%= t('events.attendee_list', count: @event.attendees.length) %></h3>
+
+    <ol>
+      <% if @event.attendees.blank? %>
+      <li class="no-data"><%= t('events.no_attendees') %></li>
+      <% end %>
+
+      <% @event.attendees.each do |attendee| %>
+      <li>
+        <%= render 'attendee', attendee: attendee %>
+      </li>
+      <% end %>
+    </ol>
+
+    <% if not @event.attendee?(current_user) and @event.open? %>
+      <p><%= cf_link_to t('events.attend'), new_event_attendee_path(@event), class: 'cf-primary-btn' %></p>
+    <% end %>
+  </section>
+</article>

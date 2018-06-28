@@ -1,0 +1,8 @@
+de:
+  views:
+    pagination:
+      first_page: erste Seite
+      prev_page: eine Seite zurück
+      next_page: eine Seite vor
+      last_page: letzte Seite
+      truncate: …

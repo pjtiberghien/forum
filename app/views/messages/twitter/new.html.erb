@@ -1,0 +1,17 @@
+<%
+content_for :title, t('plugins.twitter.tweet', subject: @message.subject, author: @message.author)
+content_for :h1, t('plugins.twitter.tweet', subject: @message.subject, author: @message.author)
+%>
+
+<%= form_tag tweet_message_path(@thread, @message), method: :post, class: 'cf-form' do %>
+
+  <div class="cf-cgroup cf-textarea-only">
+    <%= text_area_tag :tweet_text, @tweet_text %>
+  </div>
+
+  <p class="form-actions">
+    <%= submit_tag t('plugins.twitter.tweet_message'), class: 'cf-primary-btn' %>
+    <%= cf_link_to t('global.cancel'), message_path(@thread, @message), class: 'cf-btn' %>
+  </p>
+
+<% end %>

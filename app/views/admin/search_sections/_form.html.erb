@@ -1,0 +1,22 @@
+<%= render 'application/errors', object: @search_section, scope: 'admin.search_sections' %>
+
+<div class="cf-cgroup">
+  <%= f.label :name %>
+  <%= f.text_field :name %>
+</div>
+
+<div class="cf-cgroup">
+  <%= f.label :position %>
+  <%= f.number_field :position %>
+</div>
+
+<div class="cf-cgroup">
+  <%= f.label :active_by_default do %>
+    <%= f.check_box :active_by_default %> <%= SearchSection.human_attribute_name(:active_by_default) %>
+  <% end %>
+</div>
+
+<div class="cf-cgroup">
+  <%= f.label :forum_id %>
+  <%= f.collection_select :forum_id, Forum.order(:position).all, :forum_id, :name, include_blank: true %>
+</div>
